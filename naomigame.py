@@ -24,15 +24,20 @@ def is_naomi_game(filename):
         header_magic = fp.read(5).decode('utf-8')
         fp.close()
         return header_magic == 'NAOMI'
+
     except Exception:
-        print("WARNING: " + filename + "is busy!")
+        print("is_naomi_game(): Could not open " + filename)
         return False
 
 def get_game_name(filename):
     'Read game name from NAOMI rom file.'
-    fp = open(filename, 'rb')
-    fp.seek(0x30, os.SEEK_SET)
-    filename = fp.read(32).decode('utf-8').rstrip(' ')
-    fp.close()
-    
-    return filename
+    try:
+        fp = open(filename, 'rb')
+        fp.seek(0x30, os.SEEK_SET)
+        filename = fp.read(32).decode('utf-8').rstrip(' ')
+        fp.close()
+        return filename
+
+    except Exception:
+        print("get_game_name(): Error reading game name.")
+        return ''
