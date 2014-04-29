@@ -1,0 +1,2 @@
+bottle==0.12.5
+pycrypto==2.6.1
