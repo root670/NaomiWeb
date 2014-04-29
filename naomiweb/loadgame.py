@@ -28,7 +28,6 @@ class job:
         Return value: Always true
 
         '''
-        print(self._configuration.items('Games'))
         game_path = self._configuration.get('Games', 'directory') + '/'+ self._game.filename
         print("Loading {}...".format(game_path))
 		
