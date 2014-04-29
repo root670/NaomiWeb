@@ -1,13 +1,16 @@
-#!/usr/bin/python2.6
-# Triforce Netfirm Toolbox, put into the public domain. 
+#!/usr/bin/python3
+# Triforce Netfirm Toolbox, put into the public domain.
 # Please attribute properly, but only if you want.
+
+# Modified by Wesley Castro for NaomiWeb.
+
 import struct, sys
 import socket
 import time
 from Crypto.Cipher import DES
 
 #triforce_ip = sys.argv[1]
-triforce_ip = "192.168.0.9"
+triforce_ip = "192.168.1.3"
 
 # connect to the Triforce. Port is tcp/10703.
 # note that this port is only open on
@@ -16,9 +19,10 @@ triforce_ip = "192.168.0.9"
 # - it *should* work on naomi and chihiro, but due to lack of hardware, i didn't try.
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-print "connecting..."
+print("connecting...")
+s.settimeout(5)
 s.connect((triforce_ip, 10703))
-print "ok!"
+print("ok!")
 
 # a function to receive a number of bytes with hard blocking
 def readsocket(n):
@@ -57,7 +61,7 @@ def DIMM_GetInformation():
 	return readsocket(0x10)
 
 def DIMM_SetInformation(crc, length):
-	print "length: %08x" % length
+	print("length: {0:b}".format(length))
 	s.send(struct.pack("<IIII", 0x1900000C, crc & 0xFFFFFFFF, length, 0))
 
 def DIMM_Upload(addr, data, mark):
@@ -219,7 +223,7 @@ if 1:
 	#print "restarting in 10 seconds..."
 	#time.sleep(10)
 	HOST_Restart()
-	print "time limit hack looping..."
+	print("time limit hack looping...")
 	while 1:
 	# set time limit to 10h. According to some reports, this does not work.
 		TIME_SetLimit(10*60*1000)

@@ -7,6 +7,8 @@ from loadgame import *
 
 PREFS_FILE = "settings.cfg"
 prefs = configparser.ConfigParser()
+
+loadingjob = job(1, 1)
             
 def build_games_list():
     games = []
@@ -38,10 +40,23 @@ def index():
 
 @route('/load/<hashid:int>')
 def load(hashid):
-    some_games = build_games_list()
-    for game in some_games:
-        if game.__hash__() == hashid:
-            return "Found the game" + str(hashid) + ", creating job..."
+    global loadingjob
+    if loadingjob.finished() == False:
+        return "Error: A game is currently being loaded! Try again later"
+    else:
+        some_games = build_games_list()
+        for game in some_games:
+            if game.__hash__() == hashid:
+                loadingjob = job(game, prefs)
+                loadingjob.start()
+                
+                if loadingjob.finished():
+                    return "Done loading the game."
+                else:
+                    return "Game isn't loaded yet."
+                return "Found the game" + str(hashid) + ", creating job..."
+
+
 
     return "Unable to find" + str(hashid) + '!'
 
