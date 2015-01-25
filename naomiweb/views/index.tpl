@@ -24,7 +24,7 @@
 	<p>Choose a game to play</p>
 	% for game in games:
 		<p>
-			<a href="load/{{game.__hash__()}}">{{game.name}}</a> <span class="label label-default">{{round(game.size/float(1024*1024), 1)}} MB</span>
+			<a href="load/{{game.__hash__()}}">{{game.name[region]}}</a> <span class="label label-default">{{round(game.size/float(1024*1024), 1)}} MB</span>
 		</p>
 	% end
 	% end
